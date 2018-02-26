@@ -3,7 +3,14 @@ Prints the average of registered asynchronous metrics at the end of a Score-P ru
 
 # Installation
 
+Have scorep-tools available in your `$PATH`,
 
+```
+cd src
+make
+```
+
+Copy the library to a location in `$LD_LIBRARY_PATH`.
 
 # Usage
 
@@ -21,8 +28,8 @@ Prints the average of registered asynchronous metrics at the end of a Score-P ru
 
 # Details
 - For any absolut metric, the average is defined as the average of all samples ever read, no matter for how long they were active.
-- For any accumulating metric, the average is defined as the $`\frac{\sum_{Process=0}^N value_{last}-value_{first}}{N}`$
-
+- For any accumulating metric, the average is defined as the $`\frac{\sum_{Process=0}^N value_{last}-value_{first}}{N}`$ 
 # Known issues
 - In first implementations of the Substrate Plugin interface, asynchronous metrics are only available, when tracing is enabled
 - Asynchronous metrics will not be available, when profiling is active
+- Currently does not support asynchronous metrics per thread (e.g., [https://github.com/score-p/scorep_plugin_apapi](APAPI))

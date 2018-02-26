@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <inttypes.h>
 #include <sys/time.h>
 
 #include <scorep/SCOREP_SubstratePlugins.h>
@@ -333,7 +334,7 @@ static void print_metrics_write_data()
 				double time = (double) stop.tv_sec - (double) start.tv_sec
 						+ (double) stop.tv_usec / 1000000.0
 						- (double) start.tv_usec / 1000000.0;
-				printf("%s: average %f, time %f s, participating processes %d\n", metrics[i].name,
+				printf("%s: average %f, time %f s, participating processes %" PRIu64 "\n", metrics[i].name,
 						sum_avg / ((double) participating_processes), time,participating_processes);
 			}
 		}
@@ -356,6 +357,7 @@ static SCOREP_Substrates_Callback evts[SCOREP_SUBSTRATES_NUM_EVENTS];
 static uint32_t print_metrics_get_event_functions(SCOREP_Substrates_Mode mode,
 		SCOREP_Substrates_Callback** functions)
 {
+	/* TODO change this to SCOREP_EVENT_WRITE_ASYNC_METRIC_BEFORE_EVENT when merge */
 	evts[SCOREP_EVENT_WRITE_METRIC_BEFORE_EVENT] =
 			(SCOREP_Substrates_Callback) print_metrics_write_metric;
 
