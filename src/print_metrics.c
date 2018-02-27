@@ -51,9 +51,6 @@ typedef struct
 /* Callback functions from Score-P */
 static const SCOREP_SubstratePluginCallbacks* callbacks;
 
-/* Location of the main thread */
-static const struct SCOREP_Location* process_location;
-
 /* metric information */
 static metric_info_t * metrics;
 static int nr_metrics;
@@ -327,7 +324,7 @@ print_metrics_write_data ()
 				    SCOREP_IPC_UINT64_T, SCOREP_IPC_SUM, 0);
 
       /* now rank 0 prints the information */
-      if (callbacks->SCOREP_Location_GetGlobalId (process_location) == 0)
+      if (callbacks->SCOREP_Ipc_GetRank() == 0)
 	{
 	  if (participating_processes == 0)
 	    printf (
@@ -375,15 +372,6 @@ print_metrics_get_event_functions (SCOREP_Substrates_Mode mode,
   return SCOREP_SUBSTRATES_NUM_EVENTS;
 }
 
-/* when the first location is created, we store the process location id */
-static void
-print_metrics_create_location (const struct SCOREP_Location* location,
-			       const struct SCOREP_Location* parentLocation)
-{
-  if (process_location == NULL)
-    process_location = location;
-}
-
 /* take time at init and at unify */
 static void
 print_metrics_init (size_t ignored)
@@ -411,6 +399,5 @@ SCOREP_SUBSTRATE_PLUGIN_ENTRY (print_metrics)
   info.set_callbacks = print_metrics_set_callbacks;
   info.new_definition_handle = print_metrics_new_definition_handle;
   info.get_event_functions = print_metrics_get_event_functions;
-  info.create_location = print_metrics_create_location;
   return info;
 }
